@@ -3,17 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>yygh_parent</artifactId>
+        <artifactId>service</artifactId>
         <groupId>com.atguigu</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>model</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>service_user</artifactId>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

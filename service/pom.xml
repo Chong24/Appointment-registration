@@ -13,6 +13,7 @@
 
     <modules>
         <module>service_hosp</module>
+        <module>service_user</module>
     </modules>
 
     <artifactId>service</artifactId>
@@ -20,7 +21,19 @@
     <dependencies>
         <dependency>
             <groupId>com.atguigu</groupId>
+            <artifactId>service_util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atguigu</groupId>
             <artifactId>model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atguigu</groupId>
+            <artifactId>common_util</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -48,6 +61,15 @@
         <resources>
             <resource>
                 <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.yml</include>
                     <include>**/*.properties</include>

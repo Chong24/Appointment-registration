@@ -14,10 +14,12 @@ import org.springframework.context.annotation.Configuration;
 public class HospConfig {
 
     /**
-     * 分页插件
+     * 分页插件，注入此组件，才能完成分页
      */
     @Bean
     public PaginationInterceptor paginationInterceptor(){
         return new PaginationInterceptor();
     }
+
+
 }

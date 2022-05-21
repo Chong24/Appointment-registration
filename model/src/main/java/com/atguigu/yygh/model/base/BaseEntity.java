@@ -24,9 +24,8 @@ import java.util.Map;
 public class BaseEntity implements Serializable {
 
     //不加@JsonFormat，可能会导致返回给浏览器JSON数据时丢失
-    @JsonFormat
     @ApiModelProperty(value = "id")  //swagger提供的注解，value表示对属性做简单说明
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)     //id的类型采用自增
     private Long id;
 
     @ApiModelProperty(value = "创建时间")
@@ -34,18 +33,15 @@ public class BaseEntity implements Serializable {
     @TableField("create_time")
     private Date createTime;
 
-    @JsonFormat
     @ApiModelProperty(value = "更新时间")
     @TableField("update_time")
     private Date updateTime;
 
-    @JsonFormat
     @ApiModelProperty(value = "逻辑删除(1:已删除，0:未删除)")
     @TableLogic     //代表是逻辑删除
     @TableField("is_deleted")
     private Integer isDeleted;
 
-    @JsonFormat
     @ApiModelProperty(value = "其他参数")
     @TableField(exist = false)      ///代表对应的数据库的表可以不存在
     private Map<String,Object> param = new HashMap<>();
