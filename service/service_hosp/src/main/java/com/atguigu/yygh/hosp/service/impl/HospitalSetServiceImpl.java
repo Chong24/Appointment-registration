@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
  */
 @Service
 public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, HospitalSet> implements HospitalSetService {
+
     //根据传递过来的医院编码，查询数据库，查询签名
     @Override
     public String getSignKey(String hoscode) {

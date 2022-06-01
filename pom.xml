@@ -7,6 +7,8 @@
         <module>model</module>
         <module>common</module>
         <module>service</module>
+        <module>service_client</module>
+        <module>server_gateway</module>
     </modules>
 
     <parent>
@@ -24,6 +26,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <cloud.version>Hoxton.RELEASE</cloud.version>
+        <alibaba.version>2.2.0.RELEASE</alibaba.version>
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
         <mysql.version>5.1.46</mysql.version>
         <swagger.version>2.7.0</swagger.version>
@@ -36,175 +40,96 @@
         <jodatime.version>2.10.1</jodatime.version>
     </properties>
 
-    <dependencies>
-        <!--mybatis-plus 持久层-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
+    <!--dependencyManagement没有依赖的性质，例如继承性-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-        <!--lombok用来简化实体类：需要安装lombok插件-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+            <!--mybatis-plus 持久层-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
 
-        <!--swagger-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
 
-        <!--swagger ui-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
+            <!--swagger-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jwt.version}</version>
-        </dependency>
+            <!--swagger ui-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpclient.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>easyexcel</artifactId>
-            <version>${easyexcel.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>${aliyun.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>${oss.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun.version}</version>
+            </dependency>
 
-        <!--日期时间工具-->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${jodatime.version}</version>
-        </dependency>
-    </dependencies>
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${oss.version}</version>
+            </dependency>
 
-
-    <!--<dependencyManagement>-->
-    <!--<dependencies>-->
-
-    <!--<dependency>-->
-    <!--<groupId>org.springframework.cloud</groupId>-->
-    <!--<artifactId>spring-cloud-dependencies</artifactId>-->
-    <!--<version>${cloud.version}</version>-->
-    <!--<type>pom</type>-->
-    <!--<scope>import</scope>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>com.alibaba.cloud</groupId>-->
-    <!--<artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
-    <!--<version>${alibaba.version}</version>-->
-    <!--<type>pom</type>-->
-    <!--<scope>import</scope>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash;mybatis-plus 持久层&ndash;&gt;-->
-    <!--<dependency>-->
-    <!--<groupId>com.baomidou</groupId>-->
-    <!--<artifactId>mybatis-plus-boot-starter</artifactId>-->
-    <!--<version>${mybatis-plus.version}</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>mysql</groupId>-->
-    <!--<artifactId>mysql-connector-java</artifactId>-->
-    <!--<version>${mysql.version}</version>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash;swagger&ndash;&gt;-->
-    <!--<dependency>-->
-    <!--<groupId>io.springfox</groupId>-->
-    <!--<artifactId>springfox-swagger2</artifactId>-->
-    <!--<version>${swagger.version}</version>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash;swagger ui&ndash;&gt;-->
-    <!--<dependency>-->
-    <!--<groupId>io.springfox</groupId>-->
-    <!--<artifactId>springfox-swagger-ui</artifactId>-->
-    <!--<version>${swagger.version}</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>io.jsonwebtoken</groupId>-->
-    <!--<artifactId>jjwt</artifactId>-->
-    <!--<version>${jwt.version}</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>org.apache.httpcomponents</groupId>-->
-    <!--<artifactId>httpclient</artifactId>-->
-    <!--<version>${httpclient.version}</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>com.alibaba</groupId>-->
-    <!--<artifactId>fastjson</artifactId>-->
-    <!--<version>${fastjson.version}</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>com.alibaba</groupId>-->
-    <!--<artifactId>easyexcel</artifactId>-->
-    <!--<version>${easyexcel.version}</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>com.aliyun</groupId>-->
-    <!--<artifactId>aliyun-java-sdk-core</artifactId>-->
-    <!--<version>${aliyun.version}</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>com.aliyun.oss</groupId>-->
-    <!--<artifactId>aliyun-sdk-oss</artifactId>-->
-    <!--<version>${oss.version}</version>-->
-    <!--</dependency>-->
-
-    <!--&lt;!&ndash;日期时间工具&ndash;&gt;-->
-    <!--<dependency>-->
-    <!--<groupId>joda-time</groupId>-->
-    <!--<artifactId>joda-time</artifactId>-->
-    <!--<version>${jodatime.version}</version>-->
-    <!--</dependency>-->
-    <!--</dependencies>-->
-    <!--</dependencyManagement>-->
+            <!--日期时间工具-->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${jodatime.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <!-- 项目打包时会将java目录中的*.xml文件也进行打包 -->
     <build>

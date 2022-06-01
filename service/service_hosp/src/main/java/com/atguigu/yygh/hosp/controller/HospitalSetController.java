@@ -24,7 +24,7 @@ import java.util.Random;
 @Api(tags = "医院设置管理")  //swagger页面显示信息
 @RestController
 @RequestMapping("/admin/hosp/hospitalSet")
-@CrossOrigin  //代表允许跨域访问：所谓的跨域就是ip、端口、协议三者至少一个不同
+//@CrossOrigin  //代表允许跨域访问：所谓的跨域就是ip、端口、协议三者至少一个不同
 public class HospitalSetController {
 
     @Autowired
