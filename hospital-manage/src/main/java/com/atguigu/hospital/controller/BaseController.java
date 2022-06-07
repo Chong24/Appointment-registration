@@ -66,6 +66,7 @@ public class BaseController {
     }
 
     protected Map<String, Object> getFilters(HttpServletRequest request) {
+        //类似request.getParameterMap()的作用，只不过它得到的是所有参数，而下面的方法得到的是筛选过的，以s开头的
         Map<String, Object> filters = WebUtils.getParametersStartingWith(request, "s_");
         return filters;
     }

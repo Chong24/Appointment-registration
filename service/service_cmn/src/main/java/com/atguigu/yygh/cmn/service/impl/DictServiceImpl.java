@@ -94,7 +94,8 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     }
 
     @Override
-    //使用该注解标志的方法，会清空指定的缓存（value是缓存存在的命名空间，allEntries代表是否清除所有缓存）。一般用在更新或者删除方法上
+    //使用该注解标志的方法，会清空指定的缓存（value是缓存存在的命名空间，allEntries代表是否清除所有缓存）。
+    // 一般用在更新或者删除方法上
     @CacheEvict(value = "dict", allEntries=true)
     public void importDictData(MultipartFile file) {
         try {
@@ -121,7 +122,8 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
             queryWrapper.eq("value",value);
             Dict dict = dictMapper.selectOne(queryWrapper);
             return dict != null ? dict.getName() : "kong";
-        }else{//如果dictCode不为空,根据dictCode和value查询
+        }else{
+            //如果dictCode不为空,根据dictCode和value查询
             //根据dictcode查询dict对象，目的是得到dict的id值，在根据此id值查询此id下的子id
             QueryWrapper<Dict> queryWrapper1 = new QueryWrapper();
             queryWrapper1.eq("dict_code",dictCode);

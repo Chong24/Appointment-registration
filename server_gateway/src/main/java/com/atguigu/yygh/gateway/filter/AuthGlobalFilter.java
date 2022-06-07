@@ -27,8 +27,15 @@ import java.util.List;
 @Component
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
+    //使用的ant 的url路径匹配规则
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    /**
+     * 设置过滤拦截逻辑
+     * @param exchange：ServerWebExchange 就相当于当前请求和响应的上下文。
+     * @param chain：相当于拦截器链
+     * @return
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
@@ -44,15 +51,21 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
         //api接口，异步请求，校验用户必须登录
         if(antPathMatcher.match("/api/**/auth/**", path)) {
+            //从token中获取用户id
             Long userId = this.getUserId(request);
             if(StringUtils.isEmpty(userId)) {
                 ServerHttpResponse response = exchange.getResponse();
                 return out(response, ResultCodeEnum.LOGIN_AUTH);
             }
         }
+        //放行
         return chain.filter(exchange);
     }
 
+    /**
+     * 过滤器的优先级
+     * @return
+     */
     @Override
     public int getOrder() {
         return 0;

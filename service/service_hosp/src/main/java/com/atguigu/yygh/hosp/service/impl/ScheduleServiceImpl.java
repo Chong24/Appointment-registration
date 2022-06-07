@@ -409,7 +409,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper,Schedule> im
         return dayOfWeek;
     }
 
-    //根据预约规则获取可预约数据（分页）
+    //根据预约规则获取可预约的时间（分页）
     private IPage getListData(Integer page, Integer limit, BookingRule bookingRule) {
         //获取当天放号时间  yyyy-MM-dd HH:mm；因为数据库的时间是2021年的，需要修改
         DateTime releaseTime = this.getDateTime(new Date(), bookingRule.getReleaseTime());
@@ -437,7 +437,7 @@ public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper,Schedule> im
         for(int i = start;i < end;i++){
             pageDateList.add(dateList.get(i));
         }
-        //如果>7，则进行分页
+        //如果>7，则进行Mybatis-plus分页
         IPage<Date> iPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(page,limit,dateList.size());
         iPage.setRecords(pageDateList);
         return iPage;

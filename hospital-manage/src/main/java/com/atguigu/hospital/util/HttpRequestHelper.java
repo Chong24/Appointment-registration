@@ -23,7 +23,7 @@ public class HttpRequestHelper {
     }
 
     /**
-     *
+     * 将Map<String, String[]>转为Map<String, Object>
      * @param paramMap
      * @return
      */
@@ -94,6 +94,7 @@ public class HttpRequestHelper {
                         .append(param.getValue()).append("&");
             }
             log.info(String.format("--> 发送请求：post data %1s", postdata));
+            //转为字节数组是为了传输，用字节流
             byte[] reqData = postdata.toString().getBytes("utf-8");
             //远程调用实质
             byte[] respdata = HttpUtil.doPost(url,reqData);

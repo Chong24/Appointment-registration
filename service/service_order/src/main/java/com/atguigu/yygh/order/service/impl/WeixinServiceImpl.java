@@ -42,7 +42,11 @@ public class WeixinServiceImpl implements WeixinService {
     @Autowired
     private RefundInfoService refundInfoService;
 
-    //微信接口返回的不是二维码，而是一堆地址，然后根据地址可以下载一个二维码
+    /**
+     * 生成微信付款码：微信接口返回的不是二维码，而是一个包含地址的数据，然后根据地址可以下载一个二维码
+     * @param orderId
+     * @return
+     */
     @Override
     public Map<String, Object> createNative(Long orderId) {
         try {
@@ -130,6 +134,11 @@ public class WeixinServiceImpl implements WeixinService {
         }
     }
 
+    /**
+     * 微信退款
+     * @param orderId
+     * @return
+     */
     @Override
     public Boolean refund(Long orderId) {
         try {

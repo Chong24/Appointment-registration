@@ -30,6 +30,10 @@ public class MybatisPlusConfig {
         return paginationInterceptor;
     }
 
+    /**
+     * 使用逻辑删除的时候：逻辑删除插件（规定sql注入的逻辑）：高版本则不需要配置，例如3.3.1
+     * @return
+     */
     @Bean
     public ISqlInjector sqlInjector() {
         return new LogicSqlInjector();

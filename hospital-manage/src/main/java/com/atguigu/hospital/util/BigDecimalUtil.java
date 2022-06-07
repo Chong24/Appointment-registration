@@ -10,7 +10,7 @@ public class BigDecimalUtil {
     private static final int DEFAULT_DIV_SCALE = 10;
 
     /**
-     * 提供精确的加法运算。
+     * 提供精确的加法运算：需要先转为String，用BigDecimal的有参构造器再运算
      *
      * @param v1
      * @param v2

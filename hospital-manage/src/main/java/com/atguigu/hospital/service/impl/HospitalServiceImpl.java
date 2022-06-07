@@ -45,6 +45,12 @@ public class HospitalServiceImpl implements HospitalService {
     @Autowired
     private OrderInfoMapper orderInfoMapper;
 
+    /**
+     * 提交订单：首先得查询Scedule排班表，看看是否有这个排班，如果有查是否还有预约数量，如果有则添加病人信息到病人表，
+     * 添加订单信息到订单表，因为涉及了不同表的操作，因此需要事务来保证原子性
+     * @param paramMap
+     * @return
+     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Map<String, Object> submitOrder(Map<String, Object> paramMap) {
@@ -67,7 +73,7 @@ public class HospitalServiceImpl implements HospitalService {
             throw new YyghException(ResultCodeEnum.DATA_ERROR);
         }
 
-        //就诊人信息
+        //就诊人信息、将JSONObejct转为JavaBean
         Patient patient = JSONObject.parseObject(JSONObject.toJSONString(paramMap), Patient.class);
         log.info(JSONObject.toJSONString(patient));
         //处理就诊人业务

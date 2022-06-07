@@ -40,7 +40,6 @@ public class MsmServiceImpl implements MsmService{
         bodys.put("phone_number", phone);
         bodys.put("template_id", "TPL_0000");
 
-
         try {
             /**
              * 重要提示如下:

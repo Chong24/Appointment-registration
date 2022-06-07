@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 
 /**
+ * JWT的工具类
  * @author wang
  * @create 2022-05-29
  */

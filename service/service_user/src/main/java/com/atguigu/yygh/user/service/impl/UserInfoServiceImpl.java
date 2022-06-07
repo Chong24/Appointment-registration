@@ -38,6 +38,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper,UserInfo> im
     @Autowired
     private PatientService patientService;
 
+    //用户登录
     @Override
     public Map<String, Object> loginUser(LoginVo loginVo) {
         //从loginVo获取输入的手机号和验证码，并判断是否为空
@@ -102,6 +103,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper,UserInfo> im
         return map;
     }
 
+    //根据微信ID查询用户信息
     @Override
     public UserInfo selectWxInfoOpenId(String openid) {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper();

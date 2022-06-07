@@ -18,7 +18,7 @@ public final class HttpUtil {
 	static final int READ_TIMEOUT = 30000;// ms
 
 	/**
-	 * post 方式发送http请求.
+	 * post 方式发送http请求：post是带请求头的.
 	 * 
 	 * @param strUrl
 	 * @param reqData
@@ -39,36 +39,52 @@ public final class HttpUtil {
 	}
 
 	/**
+	 * //通过HttpURLConnection获取连接，远程调用，基本是固定写法
+	 //HttpURLConnection：JDK自带的HTTP请求客户端。
 	 * @param strUrl
 	 * @param reqmethod
 	 * @param reqData
 	 * @return
 	 */
 	public static byte[] send(String strUrl, String reqmethod, byte[] reqData) {
+
 		try {
+			//创建连接对象
 			URL url = new URL(strUrl);
-			//通过HttpURLConnection获取连接，远程调用，基本是固定写法
+			//创建连接
 			HttpURLConnection httpcon = (HttpURLConnection) url.openConnection();
+			//设置是否可读取
+			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，
+			// 此外发送post请求必须设置这两个
 			httpcon.setDoOutput(true);
 			httpcon.setDoInput(true);
+			//是否用缓存
 			httpcon.setUseCaches(false);
+			//是否连接遵循重定向，设置为true可以自动跳转，但对于对此跳转的只能跳一次
 			httpcon.setInstanceFollowRedirects(true);
+			//设置连接超时时间
 			httpcon.setConnectTimeout(CONN_TIMEOUT);
+			//设置读取超时时间
 			httpcon.setReadTimeout(READ_TIMEOUT);
+			//请求方法
 			httpcon.setRequestMethod(reqmethod);
+			//连接
 			httpcon.connect();
 			if (reqmethod.equalsIgnoreCase(POST)) {
+				//将参数（请求参数，拼接在路径上的）用输出流传给被调用的方法，并执行方法
 				OutputStream os = httpcon.getOutputStream();
 				os.write(reqData);
 				os.flush();
 				os.close();
 			}
+			//设置输入流，远程调用完，将数据返回给调用者
 			BufferedReader in = new BufferedReader(new InputStreamReader(httpcon.getInputStream(),"utf-8"));
 			String inputLine;
 			StringBuilder bankXmlBuffer = new StringBuilder();
 			while ((inputLine = in.readLine()) != null) {  
 			    bankXmlBuffer.append(inputLine);  
-			}  
+			}
+			//关闭资源
 			in.close();  
 			httpcon.disconnect();
 			return bankXmlBuffer.toString().getBytes();

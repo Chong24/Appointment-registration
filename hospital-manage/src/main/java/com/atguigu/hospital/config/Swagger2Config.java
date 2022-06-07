@@ -28,10 +28,11 @@ public class Swagger2Config {
     @Bean
     public Docket webApiConfig(){
 
+        //最终所有的配置信息都要存放在docket中
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("webApi")
+                .groupName("webApi")    //这个注解用于配置当前docket的名称，每一个docket都相当于一个组
                 .apiInfo(webApiInfo())
-                .select()
+                .select()           //设置哪些类的哪些方法能够添加到Swagger
                 //过滤掉admin路径下的所有页面
                 .paths(Predicates.and(PathSelectors.regex("/P2P/.*")))
                 //过滤掉所有error或error.*页面
@@ -40,6 +41,10 @@ public class Swagger2Config {
 
     }
 
+    /**
+     * 接口详细信息：包括标题、描述、版本、联系人等
+     * @return
+     */
     private ApiInfo webApiInfo(){
 
         return new ApiInfoBuilder()
