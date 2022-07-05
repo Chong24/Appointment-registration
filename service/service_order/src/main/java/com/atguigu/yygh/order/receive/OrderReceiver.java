@@ -21,6 +21,7 @@ import java.io.IOException;
 public class OrderReceiver {
     @Autowired
     private OrderService orderService;
+
     //接收定时消息，监听的逻辑就是监听value值对应
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = MqConst.QUEUE_TASK_8, durable = "true"),

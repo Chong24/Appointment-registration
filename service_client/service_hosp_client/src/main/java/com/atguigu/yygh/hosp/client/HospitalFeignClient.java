@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author wang
  * @create 2022-05-31
  */
-@FeignClient(value = "service-hosp")
+@FeignClient(value = "service-hosp", contextId = "hospitalFeignClient")
 @Repository
 public interface HospitalFeignClient {
     //根据排班id获取预约下单数据

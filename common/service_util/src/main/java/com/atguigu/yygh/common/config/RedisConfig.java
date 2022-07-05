@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.time.Duration;
 
 /**
- * redis的配置类：搭配Spring Cache做缓存，只需要简单的注解既可以完成缓存
+ * redis的配置类：搭配Spring Cache做缓存，只需要简单的注解既可以完成缓存；
  * @EnableCaching：标记注解 @EnableCaching，开启缓存，并配置Redis缓存管理器。
  * @EnableCaching 注释触发后置处理器, 检查每一个Spring bean 的 public 方法是否存在缓存注解。如果找到这样的一个注释,
  * 自动创建一个代理拦截方法调用和处理相应的缓存行为。
@@ -32,7 +32,8 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig {
     /**
-     * 自定义key规则：自动为redis的数据生成key值
+     * 自定义key规则：自动为redis的数据生成key值；缓存的key；
+     * 类名 + 方法名 + 参数
      * @return
      */
     @Bean
@@ -52,7 +53,7 @@ public class RedisConfig {
     }
 
     /**
-     * 设置RedisTemplate规则
+     * 设置Redis的key和value的序列化规则
      * @param redisConnectionFactory
      * @return
      */

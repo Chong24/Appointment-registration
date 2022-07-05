@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  @CachePut：使用该注解标志的方法，每次都会执行，并将结果存入指定的缓存中。
+ *  @CachePut 使用该注解标志的方法，每次都会执行，并将结果存入指定的缓存中。
  * 其他方法可以直接从响应的缓存中读取缓存数据，而不需要再去查询数据库。一般用在新增方法上。
  * @author wang
  * @create 2022-05-23
@@ -96,7 +96,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     @Override
     //使用该注解标志的方法，会清空指定的缓存（value是缓存存在的命名空间，allEntries代表是否清除所有缓存）。
     // 一般用在更新或者删除方法上
-    @CacheEvict(value = "dict", allEntries=true)
+    @CacheEvict(value = {"dict", "dictName", "dictChilds"}, allEntries = true)
     public void importDictData(MultipartFile file) {
         try {
             //文件输入流，输入的实体类，回调监听器；监听器完成读取工作
@@ -114,9 +114,10 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     }
 
     //查询名称
+    @Cacheable(value = "dictName")
     @Override
     public String getDictName(String dictCode, String value) {
-        //如果dictCode为空,直接根据value查询
+        //如果dictCode为空,直接根据value查询；没有dictCode说明是子节点，直接用value查即可，具有唯一性
         if(StringUtils.isEmpty(dictCode)){
             QueryWrapper queryWrapper = new QueryWrapper();
             queryWrapper.eq("value",value);
@@ -138,6 +139,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     }
 
     //根据dictcode查询查询子节点
+    @Cacheable(value = "dictChilds")
     @Override
     public List<Dict> findByDictCode(String dictCode) {
         //根据dictcode获取对应的id

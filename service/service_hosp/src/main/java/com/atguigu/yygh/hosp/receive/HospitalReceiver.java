@@ -35,11 +35,12 @@ public class HospitalReceiver {
             key = {MqConst.ROUTING_ORDER}
     ))
     public void receiver(OrderMqVo orderMqVo, Message message, Channel channel) throws IOException {
+        //应该保证一条sql语句执行，即需要加锁
         if(null != orderMqVo.getAvailableNumber()) {
             //下单成功更新预约数
             Schedule schedule = scheduleService.getScheduleId(orderMqVo.getScheduleId());
             schedule.setReservedNumber(orderMqVo.getReservedNumber());
-            schedule.setAvailableNumber(orderMqVo.getAvailableNumber());
+            schedule.setAvailableNumber(orderMqVo.getAvailableNumber() - 1);
             scheduleService.update(schedule);
         }else{
             //取消预约更新预约数
@@ -51,6 +52,7 @@ public class HospitalReceiver {
 
         //发送短信
         MsmVo msmVo = orderMqVo.getMsmVo();
+        //
         if(null != msmVo) {
             rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_MSM, MqConst.ROUTING_MSM_ITEM, msmVo);
         }

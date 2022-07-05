@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author wang
  * @create 2022-05-31
  */
-@FeignClient(value = "service-user")
+@FeignClient(value = "service-user", contextId = "patientFeignClient")
 @Repository
 public interface PatientFeignClient {
     //根据id获取就诊人信息

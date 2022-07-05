@@ -12,7 +12,7 @@ import java.util.Map;
  * @author wang
  * @create 2022-05-31
  */
-@FeignClient(value = "service-order")
+@FeignClient(value = "service-order", contextId = "orderFeignClient")
 @Repository
 public interface OrderFeignClient {
     /**

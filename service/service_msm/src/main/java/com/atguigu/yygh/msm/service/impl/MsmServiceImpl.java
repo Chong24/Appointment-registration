@@ -68,6 +68,7 @@ public class MsmServiceImpl implements MsmService{
 
         if(!StringUtils.isEmpty(msmVo.getPhone())){
             boolean isSend = this.send(msmVo.getPhone(), msmVo.getParam());
+            return isSend;
         }
         return false;
     }

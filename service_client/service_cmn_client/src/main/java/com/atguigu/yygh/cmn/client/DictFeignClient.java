@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 远程调用cmn：会默认生成一个代理实现类
+ * 配置contextId唯一标识一个FeignClient
  * @author wang
  * @create 2022-05-28
  */
-@FeignClient("service-cmn")
+@FeignClient(value = "service-cmn", contextId = "dictFeignClient")
 @Repository
 public interface DictFeignClient {
 

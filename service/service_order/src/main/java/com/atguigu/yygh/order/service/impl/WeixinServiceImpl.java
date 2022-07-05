@@ -71,6 +71,8 @@ public class WeixinServiceImpl implements WeixinService {
             //paramMap.put("total_fee", order.getAmount().multiply(new BigDecimal("100")).longValue()+"");
             paramMap.put("total_fee", "1");  //为了测试使用，统一写成此值
             paramMap.put("spbill_create_ip", "127.0.0.1");
+            //这是回调地址，如果微信支付成功了就会回调这个接口，所以我们在这个接口的controller下处理后面的逻辑即可；
+            //最好这个对应的controller方法要有返回值，这样微信拿到你的返回值就知道你收到了，就不会再给你发了，防止重复回调
             paramMap.put("notify_url", "http://guli.shop/api/order/weixinPay/weixinNotify");
             paramMap.put("trade_type", "NATIVE");
             //调用微信生成二维码接口
@@ -101,7 +103,7 @@ public class WeixinServiceImpl implements WeixinService {
         }
     }
 
-    //查询支付的状态，隔一段时间查询一下，制度成功就更新数据库，并前端收回二维码弹框
+    //查询支付的状态，隔一段时间查询一下，支付成功就更新数据库，并前端收回二维码弹框
     @Override
     public Map<String, String> queryPayStatus(Long orderId) {
         try {

@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,OrderInfo>  implem
     @Autowired
     private WeixinService weixinService;
 
+    @GlobalTransactional
     @Override
     public Long saveOrder(String scheduleId, Long patientId) {
         //获取就诊人信息
@@ -117,11 +119,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,OrderInfo>  implem
             //预约记录唯一标识（医院预约记录主键）
             String hosRecordId = jsonObject.getString("hosRecordId");
             //预约序号
-            Integer number = jsonObject.getInteger("number");;
+            Integer number = jsonObject.getInteger("number");
             //取号时间
-            String fetchTime = jsonObject.getString("fetchTime");;
+            String fetchTime = jsonObject.getString("fetchTime");
             //取号地址
-            String fetchAddress = jsonObject.getString("fetchAddress");;
+            String fetchAddress = jsonObject.getString("fetchAddress");
             //更新订单
             orderInfo.setHosRecordId(hosRecordId);
             orderInfo.setNumber(number);
@@ -225,6 +227,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,OrderInfo>  implem
         return map;
     }
 
+    @GlobalTransactional
     @Override
     public Boolean cancelOrder(Long orderId) {
         OrderInfo orderInfo = baseMapper.selectById(orderId);
@@ -289,7 +292,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,OrderInfo>  implem
     @Override
     public void patientTips() {
         QueryWrapper<OrderInfo> wrapper = new QueryWrapper<>();
-        wrapper.eq("reserve_date",new DateTime().toString("yyyy-MM-dd"));
+//        wrapper.eq("reserve_date",new DateTime().toString("yyyy-MM-dd"));
+        wrapper.eq("reserve_date","2022-06-01");
         wrapper.ne("order_status",OrderStatusEnum.CANCLE.getStatus());  //状态为取消订单的则不需要提醒
         List<OrderInfo> orderInfoList = baseMapper.selectList(wrapper);
         for(OrderInfo orderInfo : orderInfoList){

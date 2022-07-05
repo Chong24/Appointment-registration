@@ -79,10 +79,12 @@ public class ApiServiceImpl implements ApiService {
         return null;
     }
 
+    //前端将JSON转为字符串、并且告诉之前是什么格式的；后端接收字符串后，将其转为原来的json格式，取出值
     @Override
     public boolean saveHospital(String data) {
+        //String转为JSON对象：引入fastJson包
         JSONObject jsonObject = JSONObject.parseObject(data);
-
+        //key是String，value是Object
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("hoscode",this.getHoscode());
         paramMap.put("hosname",jsonObject.getString("hosname"));
@@ -104,6 +106,7 @@ public class ApiServiceImpl implements ApiService {
 
         //这是医院管理系统和预约挂号接口调用的本质，但是这是写死的
         //这里调用预约挂号接口路径是通过数据库api和路径拼接出来的，所以医院设置的url不能乱填，得填需要调用服务的端口地址
+        //用的是jdk自带的HttpURLConnection来远程调用，将数据传给远程方法。
         JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveHospital");
         System.out.println(respone.toJSONString());
 

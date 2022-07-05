@@ -11,10 +11,10 @@ import java.util.Date;
  * @create 2022-05-29
  */
 public class JwtHelper {
-    private static long tokenExpiration = 24*60*60*1000; //token1过期时间设置 单位：毫秒
+    private static long tokenExpiration = 24*60*60*1000; //token过期时间设置 单位：毫秒
     private static String tokenSignKey = "123456";  //签名秘钥
 
-    //根据参数生成token
+    //根据参数生成token：这里采用的是userId和userName作为jwt的payload部分
     public static String createToken(Long userId, String userName) {
         String token = Jwts.builder()
                 .setSubject("YYGH-USER")

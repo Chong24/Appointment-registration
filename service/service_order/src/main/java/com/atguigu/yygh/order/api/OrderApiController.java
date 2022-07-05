@@ -10,6 +10,7 @@ import com.atguigu.yygh.vo.order.OrderQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class OrderApiController {
     private OrderService orderService;
 
     //生成挂号订单
+    @ApiOperation("生成订单")
     @PostMapping("auth/submitOrder/{scheduleId}/{patientId}")
     public Result saveOrder(@PathVariable String scheduleId,
                             @PathVariable Long patientId){
@@ -63,6 +65,7 @@ public class OrderApiController {
     }
 
     //取消预约
+    @ApiOperation("取消订单")
     @GetMapping("auth/cancelOrder/{orderId}")
     public Result cancelOrder(@PathVariable Long orderId){
         Boolean isOrder = orderService.cancelOrder(orderId);

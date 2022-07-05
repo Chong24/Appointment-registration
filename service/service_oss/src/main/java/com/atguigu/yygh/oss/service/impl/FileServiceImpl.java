@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -43,12 +45,19 @@ public class FileServiceImpl implements FileService {
 
             // 调用方法，实现上传  参数2为上传文件（路径+）名称
             ossClient.putObject(bucketName, filename, inputStream);
+
+            // 设置签名URL过期时间，单位为毫秒。
+            Date expiration = new Date(new Date().getTime() + 3600 * 1000);
+            // 生成以GET方法访问的签名URL，访客可以直接通过浏览器访问相关内容。
+            URL url = ossClient.generatePresignedUrl(bucketName, filename, expiration);
+
             // 关闭OSSClient。
             ossClient.shutdown();
+
             // 返回上传后文件路径
             // 例：https://yygh-atguigu-li.oss-cn-beijing.aliyuncs.com/qq.jpg
-            String url = "http://" + bucketName + "." + endpoint + "/" + filename;
-            return url;
+//            String url = "http://" + bucketName + "." + endpoint + "/" + filename;
+            return url.toString();
         } catch (IOException e) {
             e.printStackTrace();
             return null;

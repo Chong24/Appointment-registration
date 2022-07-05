@@ -29,6 +29,7 @@ public class MsmReceiver {
             key = {MqConst.ROUTING_MSM_ITEM}
     ))
     public void send(MsmVo msmVo, Message message, Channel channel) {
-        msmService.send(msmVo);
+        //可以发，但是由于短信模板的原因，只能发验证码
+        msmService.send(msmVo.getPhone(), "2424");
     }
 }

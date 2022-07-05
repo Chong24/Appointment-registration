@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 对Hospital表（存在Mongondb数据库中）的service层
@@ -27,7 +28,7 @@ public interface HospitalService {
     void updateStatus(String id, Integer status);
 
     //查询医院详情
-    Map<String, Object> getHospById(String id);
+    Map<String, Object> getHospById(String id) throws ExecutionException, InterruptedException;
 
     //获取医院名称
     String getHospName(String hoscode);
@@ -36,6 +37,6 @@ public interface HospitalService {
     List<Hospital> findByHosname(String hosname);
 
     //根据医院编号获取预约挂号详情
-    Map<String, Object> item(String hoscode);
+    Map<String, Object> item(String hoscode) throws ExecutionException, InterruptedException;
 
 }

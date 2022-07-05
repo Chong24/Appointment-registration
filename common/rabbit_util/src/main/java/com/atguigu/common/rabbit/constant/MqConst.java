@@ -12,6 +12,7 @@ public class MqConst {
     public static final String ROUTING_ORDER = "order";
     //队列
     public static final String QUEUE_ORDER = "queue.order";
+
     /**
      * 短信
      */
@@ -20,7 +21,17 @@ public class MqConst {
     //队列
     public static final String QUEUE_MSM_ITEM = "queue.msm.item";
 
-    //定时任务
+    /**
+     * 用户
+     */
+    public static final String EXCHANGE_DIRECT_User = "exchange.direct.user";
+    public static final String ROUTING_USER_ITEM = "user.item";
+    //队列
+    public static final String QUEUE_User_ITEM = "queue.user.item";
+
+    /**
+     * 定时任务：就医提醒
+     */
     public static final String EXCHANGE_DIRECT_TASK = "exchange.direct.task";
     public static final String ROUTING_TASK_8 = "task.8";
     //队列

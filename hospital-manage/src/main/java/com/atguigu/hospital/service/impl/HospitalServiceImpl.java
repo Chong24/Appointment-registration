@@ -45,6 +45,9 @@ public class HospitalServiceImpl implements HospitalService {
     @Autowired
     private OrderInfoMapper orderInfoMapper;
 
+    @Autowired
+    private ScheduleMapper scheduleMapper;
+
     /**
      * 提交订单：首先得查询Scedule排班表，看看是否有这个排班，如果有查是否还有预约数量，如果有则添加病人信息到病人表，
      * 添加订单信息到订单表，因为涉及了不同表的操作，因此需要事务来保证原子性
@@ -62,7 +65,7 @@ public class HospitalServiceImpl implements HospitalService {
         String reserveTime = (String)paramMap.get("reserveTime");
         String amount = (String)paramMap.get("amount");
 
-        Schedule schedule = this.getSchedule("1L");  //因为是模拟系统，就查1的schedule
+        Schedule schedule = this.getSchedule(hosScheduleId);  //因为是模拟系统，就查1的schedule
         if(null == schedule) {
             throw new YyghException(ResultCodeEnum.DATA_ERROR);
         }
@@ -80,6 +83,7 @@ public class HospitalServiceImpl implements HospitalService {
         Long patientId = this.savePatient(patient);
 
         Map<String, Object> resultMap = new HashMap<>();
+        //查询是否还有号
         int availableNumber = schedule.getAvailableNumber().intValue() - 1;
         if(availableNumber > 0) {
             schedule.setAvailableNumber(availableNumber);
@@ -119,21 +123,28 @@ public class HospitalServiceImpl implements HospitalService {
         return resultMap;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updatePayStatus(Map<String, Object> paramMap) {
-        String hoscode = (String)paramMap.get("hoscode");
         String hosRecordId = (String)paramMap.get("hosRecordId");
+        String hosScheduleId = (String)paramMap.get("hosScheduleId");
 
         OrderInfo orderInfo = orderInfoMapper.selectById(hosRecordId);
+        Schedule schedule = this.getSchedule(hosScheduleId);
         if(null == orderInfo) {
             throw new YyghException(ResultCodeEnum.DATA_ERROR);
         }
-        //已支付
-        orderInfo.setOrderStatus(1);
-        orderInfo.setPayTime(new Date());
-        orderInfoMapper.updateById(orderInfo);
+        //已支付，则将可预约数减一
+        if(schedule.getAvailableNumber() > 0){
+            orderInfo.setOrderStatus(1);
+            orderInfo.setPayTime(new Date());
+            schedule.setAvailableNumber(schedule.getAvailableNumber() - 1);
+            scheduleMapper.updateById(schedule);
+            orderInfoMapper.updateById(orderInfo);
+        }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCancelStatus(Map<String, Object> paramMap) {
         String hoscode = (String)paramMap.get("hoscode");
@@ -147,6 +158,10 @@ public class HospitalServiceImpl implements HospitalService {
         orderInfo.setOrderStatus(-1);
         orderInfo.setQuitTime(new Date());
         orderInfoMapper.updateById(orderInfo);
+
+        Schedule schedule = scheduleMapper.selectById(orderInfo.getScheduleId());
+        schedule.setAvailableNumber(schedule.getAvailableNumber() + 1);
+        scheduleMapper.updateById(schedule);
     }
 
     private Schedule getSchedule(String frontSchId) {
